@@ -1,0 +1,85 @@
+.cart-item {
+    background: #f3f3f3;
+    padding: 1.5rem 1rem;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos */
+    width: 95%;
+    margin-left: 5%;
+    position: relative;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  
+    .image {
+      flex: 0 0 auto; /* No se expande, ancho y alto automáticos */
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin-right: 1.2rem;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      overflow: hidden; /* Evita que la imagen se desborde */
+    }
+  
+    .image ion-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ajusta la imagen para cubrir todo el contenedor */
+    }
+  
+    .description {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Centra verticalmente el contenido */
+      overflow: hidden; /* Evita que el texto se desborde */
+    }
+  
+    .description h3 {
+      font-weight: 600;
+      color: #1f1f1f;
+      margin-bottom: 0.5rem; /* Espacio entre el título y el párrafo */
+      white-space: nowrap; /* Evita que el título se divida en varias líneas */
+      overflow: hidden; /* Evita que el título se desborde */
+      text-overflow: ellipsis; /* Añade puntos suspensivos si el título es demasiado largo */
+    }
+  
+    .description p {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffb800;
+      margin: 0; /* Elimina el margen por defecto */
+      display: flex; /* Permite alinear el precio con el sup */
+      align-items: center; /* Alinea verticalmente el precio con el sup */
+    }
+  
+    .description p sup {
+      font-size: 0.8rem;
+      margin-right: 2px;
+    }
+    .actions {
+        border: 1px solid #c7c7c7;
+        border-radius: 2rem;
+
+        .counter {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #6b45bc;
+        }
+        ion-button {
+            --background: #fff;
+            --box-shadow: 0px 2px 10px grey;
+            --padding-start: 0;
+            --padding-end: 0;
+            --padding-top: 0;
+            --padding-bottom: 0;
+            --color: #6b45bc;
+
+            height: 35px;
+            width: 35px;
+        }
+    }
+  }
+  

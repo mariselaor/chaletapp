@@ -1,0 +1,43 @@
+<ion-content>
+  <app-header></app-header>
+  <app-logo></app-logo>
+
+  <h2 class="ion-text-center ion-no-margin">Login</h2>
+  <div class="content">
+    <div class="d-flex-center">
+      <form (keyup.enter)="submit()" (ngSubmit)="submit()" class="ion-text-center">
+
+        <!--email-->
+        <app-custom-input autocomplete="email" icon="mail-outline" [control]="form.controls.email" type="email"
+          label="Correo"></app-custom-input>
+        <div class="validators" *ngIf="form.controls.email.errors && form.controls.email.touched">
+          <div *ngIf="form.controls.email.errors?.['required']">El correo es requerido</div>
+          <div *ngIf="form.controls.email.errors?.['email']">El correo no es válido</div>
+        </div>
+
+        <!--password-->
+        <app-custom-input [control]="form.controls.password" icon="lock-closed-outline" type="password"
+          label="Contraseña"></app-custom-input>
+        <div class="validators" *ngIf="form.controls.password.errors && form.controls.password.touched">
+          <div *ngIf="form.controls.password.errors?.['required']">La contraseña es requerida</div>
+        </div>
+
+        <ion-button mode="ios" class="ion-margin-vertical" type="submit" [disabled]="!form.valid">
+          Ingresar
+          <ion-icon slot="end" name="log-in-outline"></ion-icon>
+        </ion-button>
+
+        <div class="sign-up">
+          <div>No tienes cuenta?</div>
+          <ion-button class="ion-margin-vertical" routerLink="./sign-up" mode="ios">
+            Regístrate
+            <ion-icon slot="end" name="person-add-outline"></ion-icon>
+          </ion-button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+</ion-content>

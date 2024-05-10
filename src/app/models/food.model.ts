@@ -1,9 +1,8 @@
-export interface Food{
-    id?: string;
-    title: string;
-    price: number;
-    image?: string;
-    description?: string;
-    categoryId: string;
+export interface Food {
+  id?: string;
+  title: string;
+  price: number;
+  description: string;
+  categoryId: string;
+  image: string; // Agrega la propiedad 'image' al modelo de Food
 }
-

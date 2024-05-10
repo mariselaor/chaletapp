@@ -113,13 +113,7 @@ export class FirebaseService {
   deleteFoodFromFirestore(id: string): Promise<void> {
     return this.firestore.doc(`foods/${id}`).delete();
   }
-  async addFood(food: Food): Promise<void> {
-    try {
-      await this.firestore.collection('foods').add(food);
-    } catch (error) {
-      console.error('Error al agregar alimento:', error);
-      throw error; // Puedes manejar el error según tu lógica de aplicación
-    }
+  addFood(newProduct: Food): Promise<void> {
+    return this.firestore.collection('foods').doc(newProduct.id).set(newProduct);
   }
 }
-

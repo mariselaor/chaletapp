@@ -38,7 +38,7 @@ export class CartPage implements OnInit {
       buttons: [
         {
           text: 'Si',
-          handler: () => this.cartService.removeItem(parseInt(item.id)),
+          handler: () => this.cartService.deleteFood(parseInt(item.id)),
         },
         {
           text :'No',

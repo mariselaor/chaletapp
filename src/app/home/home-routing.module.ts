@@ -9,15 +9,15 @@ const routes: Routes = [
     children: [
       {
         path: 'listing',
-        loadChildren: () => import('../screens/listing/listing.module').then( m => m.ListingPageModule)
+        loadChildren: () => import('../screens/listing/listing.module').then(m => m.ListingPageModule)
       },
       {
         path: 'cart',
-        loadChildren: () => import('../screens/cart/cart.module').then( m => m.CartPageModule)
+        loadChildren: () => import('../screens/cart/cart.module').then(m => m.CartPageModule)
       },
       {
-        path: 'profile', 
-        loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+        path: 'profile',
+        loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
       },
       {
         path: '', // Redirecciona al listado por defecto si no hay ninguna ruta especificada
@@ -32,4 +32,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class HomePageRoutingModule {}
+export class HomePageRoutingModule { }

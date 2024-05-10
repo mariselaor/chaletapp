@@ -9,10 +9,15 @@ import { Food } from 'src/app/models/food.model';
 export class FoodCardComponent {
   @Input() item: Food; // Asegúrate de que el tipo sea 'Food'
   @Output() clicked = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<void>(); // Quitamos el parámetro del EventEmitter
 
   onClick() {
     if (this.item && this.item.id) {
       this.clicked.emit(this.item.id);
     }
+  }
+  
+  deleteItem() {
+    this.delete.emit(); // Eliminamos el parámetro del emit
   }
 }

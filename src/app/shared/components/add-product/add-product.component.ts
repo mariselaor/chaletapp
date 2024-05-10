@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { FirebaseService } from 'src/app/services/firebase.service'; // Importa tu servicio de Firebase
-import { Food } from 'src/app/models/food.model'; // Importa tu modelo de alimento
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { Food } from 'src/app/models/food.model';
 import { Category } from 'src/app/models/category.model';
-import { Subscription } from 'rxjs'; // Importa Subscription para gestionar las suscripciones
+import { Subscription } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-add-product',
@@ -11,28 +12,29 @@ import { Subscription } from 'rxjs'; // Importa Subscription para gestionar las 
   styleUrls: ['./add-product.component.scss'],
 })
 export class AddProductComponent implements OnInit {
-  newFood = {
+  newFood: Food = {
+    id: '', // Asigna un valor adecuado al ID si lo necesitas
     title: '',
     price: null,
     description: '',
-    categoryId: ''
+    categoryId: '',
+    image: '' // Agrega la propiedad 'image' al objeto newFood
   };
+  
 
-  categories: Category[] = []; // Inicializa la lista de categorías como vacía
-  categoriesSubscription: Subscription; // Variable para gestionar la suscripción
+  categories: Category[] = [];
+  categoriesSubscription: Subscription;
 
   constructor(private modalController: ModalController, private firebaseService: FirebaseService) {}
 
   ngOnInit() {
-    // Cuando el componente se inicie, llama al método para obtener las categorías
     this.loadCategories();
   }
 
   loadCategories() {
-    // Suscribe el Observable y maneja los datos cuando estén disponibles
     this.categoriesSubscription = this.firebaseService.getCategories().subscribe(
       (categories: Category[]) => {
-        this.categories = categories; // Asigna las categorías recibidas al arreglo
+        this.categories = categories;
       },
       (error) => {
         console.error('Error al obtener las categorías:', error);
@@ -42,7 +44,13 @@ export class AddProductComponent implements OnInit {
 
   async addFood() {
     try {
-      // Agregar la lógica para agregar el producto a la base de datos
+      // Genera un nuevo ID único para el producto
+      const newProductId = uuidv4();
+  
+      // Asigna el nuevo ID al objeto newFood
+      this.newFood.id = newProductId;
+  
+      // Agrega la lógica para agregar el producto a la base de datos
       await this.firebaseService.addFood(this.newFood);
       console.log('Producto agregado exitosamente');
       this.modalController.dismiss();
@@ -50,13 +58,12 @@ export class AddProductComponent implements OnInit {
       console.error('Error al agregar el producto:', error);
     }
   }
-
+  
   closeModal() {
     this.modalController.dismiss();
   }
 
   ngOnDestroy() {
-    // Al destruir el componente, nos aseguramos de desuscribirnos del Observable
     if (this.categoriesSubscription) {
       this.categoriesSubscription.unsubscribe();
     }

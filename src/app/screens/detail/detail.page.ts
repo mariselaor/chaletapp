@@ -1,25 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router'; // Agregamos Router
 import { ToastController } from '@ionic/angular';
 import { CartItem } from 'src/app/models/cart-item.model';
 import { Food } from 'src/app/models/food.model';
 import { FoodService } from 'src/app/services/food.service';
 import { CartService } from 'src/app/services/cart.service';
 
-
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
 })
-export class DetailPage implements OnInit {
+export class DetailPage {
   id: number | null = null;
-  food: Food | undefined;
+  food: Food = {
+    id: '',
+    categoryId: '', // Asegúrate de proporcionar un valor apropiado para categoryId
+    title: '',
+    price: null,
+    image: '',
+    description: ''
+  };
 
   constructor(
-    private activatedRoute: ActivatedRoute, 
-    private foodService: FoodService, 
-    private cartService: CartService, // Inyecta el servicio CartService
+    private activatedRoute: ActivatedRoute,
+    private foodService: FoodService,
+    private cartService: CartService,
+    private router: Router, // Inyectamos Router
     private toastController: ToastController
   ) { }
 
@@ -36,22 +43,21 @@ export class DetailPage implements OnInit {
   }
 
   async addItemToCart() {
-    if (this.food !== undefined) {
+    if (this.food && this.food.id !== null) {
       const cartItem: CartItem = {
-        id: this.food.id?.toString() || '', // Usa optional chaining para evitar errores si this.food.id es undefined
+        id: this.food.id.toString(),
         name: this.food.title,
         price: this.food.price,
         image: this.food.image || '',
         quantity: 1,
       };
-  
-      //Aquí debes llamar al método para agregar al carrito en el servicio adecuado.
+
+      //Aquí llamamos al método para agregar al carrito en el servicio adecuado.
       this.cartService.addToCart(cartItem);
-  
+
       this.presentToast();
     }
   }
-  
 
   async presentToast() {
     const toast = await this.toastController.create({
@@ -62,4 +68,16 @@ export class DetailPage implements OnInit {
 
     toast.present();
   }
+
+  // En DetailPage
+  async deleteFood() {
+    if (this.food && this.food.id !== null) {
+      // Convertir el ID de cadena a número antes de pasar al método deleteFood
+      const foodId = parseInt(this.food.id);
+      this.cartService.deleteFood(foodId);
+      console.log('Eliminar comida con ID:', foodId);
+    }
+  }
+  
+
 }

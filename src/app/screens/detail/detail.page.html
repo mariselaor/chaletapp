@@ -6,10 +6,8 @@
       </ion-button>
     </ion-buttons>
     <ion-title>Food Detail</ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
-      </ion-button>
+    <ion-buttons slot="end"> <!-- Mover el botón Eliminar Producto aquí -->
+      <ion-button (click)="deleteFood()">Eliminar Producto</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -29,10 +27,6 @@
     <ion-img [src]="food?.image"></ion-img>
 
     <ion-card-content>
-      <div class="rates">
-        <app-badge icon="timer-outline" text="30m"></app-badge>
-        <app-badge icon="star-outline" text="4.5"></app-badge>
-      </div>
 
       <div class="about">
         <h2>About</h2>
@@ -48,4 +42,6 @@
       </ion-col>
     </ion-row>
   </ion-card>
+ 
+
 </ion-content>

@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { NoAuthGuard } from './guards/no-auth.guard';
 import { AuthGuard } from './guards/auth.guard';
 
+
 const routes: Routes = [
   {
     path: 'home',
@@ -17,7 +18,7 @@ const routes: Routes = [
   {
     path: 'detail/:id',
     loadChildren: () => import('./screens/detail/detail.module').then(m => m.DetailPageModule)
-  },
+  },  
   {
     path: 'profile',
     loadChildren: () => import('./home/profile/profile.module').then(m => m.ProfilePageModule),

@@ -66,12 +66,28 @@ export class ListingPage implements OnInit {
   }
 
   async openAddProductModal() {
-    const modal = await this.modalController.create({
-      component: AddProductComponent, // Componente modal para agregar producto
-      cssClass: 'add-product-modal' 
-    });
-    return await modal.present();
-  }
+  const modal = await this.modalController.create({
+    component: AddProductComponent,
+    cssClass: 'add-product-modal'
+  });
+  modal.onDidDismiss().then((data) => {
+    if (data && data.data && data.data.newProduct) {
+      const newProduct = data.data.newProduct;
+      // Guardar el nuevo producto en Firebase y obtener el ID del documento
+      this.firebaseService.addFood(newProduct).then((docId) => {
+        // Asignar el ID del documento al nuevo producto localmente
+        newProduct.id = docId;
+        // Agregar el nuevo producto a la lista local de alimentos
+        this.foods.push(newProduct);
+        this.filteredFoods.push(newProduct); // Si es necesario
+      }).catch((error) => {
+        console.error('Error al agregar el producto:', error);
+      });
+    }
+  });
+  return await modal.present();
+}
+
 
   filterByCategory(category: Category | null) {
     if (!category) {

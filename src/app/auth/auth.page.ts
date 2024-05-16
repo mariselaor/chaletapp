@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-auth',
@@ -17,46 +18,73 @@ export class AuthPage implements OnInit {
 
   constructor(
     private firebaseSvc: FirebaseService,
-    private utilsSvc: UtilsService
+    private utilsSvc: UtilsService,
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit() { }
 
   async submit() {
     if (this.form.valid) {
-      try {
-        this.utilsSvc.presentLoading({ message: "Autenticando..." });
-        const res = await this.firebaseSvc.login(this.form.value as User);
+      const loading = await this.loadingController.create();
+      await loading.present();
 
-        let user: User = {
-          uid: res.user.uid,
-          name: res.user.displayName || '',
-          email: res.user.email || '',
-          password: ''
-        };        
+      this.firebaseSvc.signIn(this.form.value as User).then(res => {
+        
+        this.getUserInfo(res.user.uid);
 
-        this.utilsSvc.setElementInLocalStorage('user', user);
-        // Redirige a una página válida después de iniciar sesión
+      }).catch(error => {
+        console.log(error);
+
+        this.utilsSvc.presentToast({
+          message: error.message,
+          duration: 2500,
+          color: 'primary',
+          icon: 'alert-circle-outline'
+        });
+      }).finally(() => {
+        loading.dismiss();
+      });
+    }
+  }
+
+  async getUserInfo(uid: string) {
+    if (this.form.valid) {
+      const loading = await this.loadingController.create({
+        message: 'Registrando...',
+        translucent: true
+      });
+      await loading.present();
+
+      let path = 'users/${uid}';
+
+      this.firebaseSvc.getDocument(path).then((user: User) => {
+
+        this.utilsSvc.saveInLocalStorage('user', user);
         this.utilsSvc.routerLink('/home/listing');
-        this.utilsSvc.dismissLoading();
-
+        this.form.reset();
         this.utilsSvc.presentToast({
           message: `Te damos la bienvenida ${user.name}`,
           duration: 1500,
-          color: 'success',
-          icon: 'person-outline'
+          color: 'primary',
+          icon: 'person-circle-outline'
         });
+        
 
-        this.form.reset();
-      } catch (error) {
-        this.utilsSvc.dismissLoading();
+      }).catch((error) => {
+        console.log(error);
+
         this.utilsSvc.presentToast({
-          message: error.message || 'Ha ocurrido un error',
-          duration: 5000,
-          color: 'warning',
+          message: error.message,
+          duration: 2500,
+          color: 'primary',
           icon: 'alert-circle-outline'
         });
-      }
+      }).finally(() => {
+        loading.dismiss();
+      });
     }
   }
 }
+
+

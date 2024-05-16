@@ -7,6 +7,9 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { FoodService } from './food.service';
 import { CartService } from './cart.service';
+import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
+import { User } from '../models/user.model';
+import {getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, query, updateDoc, deleteDoc} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -21,30 +24,24 @@ export class FirebaseService {
     private router: Router
   ) { }
 
-  // Métodos de autenticación
-  getUserData(uid: string): Observable<any> {
-    return this.firestore.doc(`users/${uid}`).valueChanges();
+  //=========== ACCEDER ==============
+  getAuth(){
+    return getAuth();
   }
 
-  getAuth() {
-    return this.auth;
+  //=========== ACCEDER ==============
+  signIn(user: User){
+    return signInWithEmailAndPassword(getAuth(),user.email,user.password);
   }
 
-  login(user: any) {
-    return this.auth.signInWithEmailAndPassword(user.email, user.password);
+  // ========= REGISTRAR ===============
+  signUp(email: string, password: string) {
+    return createUserWithEmailAndPassword(getAuth(), email, password);
   }
 
-  signUp(user: any) {
-    return this.auth.createUserWithEmailAndPassword(user.email, user.password);
-  }
-
-  async updateUser(user: any) {
-    try {
-      const userRef = this.firestore.collection('users').doc(user.uid);
-      await userRef.update(user);
-    } catch (error) {
-      console.error('Error al actualizar el usuario:', error);
-    }
+  // ========= ACTUALIZAR USUARIO ===============
+  updateUser(displayName: string){
+    return updateProfile(getAuth().currentUser,{ displayName });
   }
 
   getAuthState() {
@@ -91,9 +88,13 @@ export class FirebaseService {
   getFirestore() {
     return this.firestore;
   }
+   //==== Obtener un documento ====
+   async getDocument(path: string){
+    return (await getDoc(doc(getFirestore(), path))).data();
+  }
 
   setDocument(path: string, data: any) {
-    return this.getFirestore().collection(path).doc(path).set(data);
+    return this.firestore.doc(path).set(data);
   }
 
   // Métodos para alimentos desde el servicio

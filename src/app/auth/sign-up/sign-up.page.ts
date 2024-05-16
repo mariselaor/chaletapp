@@ -1,7 +1,5 @@
-// sign-up.page.ts
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { LoadingController } from '@ionic/angular';
@@ -37,15 +35,19 @@ export class SignUpPage implements OnInit {
       await loading.present();
 
       try {
-        const res = await this.firebaseSvc.signUp(this.form.value as User);
+        const res = await this.firebaseSvc.signUp(this.form.value.email, this.form.value.password);
         const uid = res.user.uid;
         this.form.controls.uid.setValue(uid);
         await this.setUserInfo(uid);
         this.form.reset();
       } catch (error) {
         console.error(error);
+        let errorMessage = 'Ha ocurrido un error';
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = 'La dirección de correo electrónico ya está en uso por otra cuenta.';
+        }
         this.utilsSvc.presentToast({
-          message: error.message,
+          message: errorMessage,
           duration: 2500,
           color: 'primary',
           icon: 'alert-circle-outline'
@@ -72,13 +74,13 @@ export class SignUpPage implements OnInit {
         // Eliminar la contraseña del formulario antes de guardarlo en la base de datos
         const userInfo = { ...this.form.value };
         delete userInfo.password;
+        delete userInfo.confirmPassword;
 
-        // Guardar la información del usuario en la base de datos
-        await this.firebaseSvc.setDocument('users', userInfo);
-
+        // Guardar la información del usuario en la base de datos en la ruta correcta
+        await this.firebaseSvc.setDocument(`users/${uid}`, userInfo);
 
         // Redirigir al usuario a la página principal
-        this.utilsSvc.routerLink('/home');
+        this.utilsSvc.routerLink('/home/listing');
       } catch (error) {
         console.error(error);
         this.utilsSvc.presentToast({

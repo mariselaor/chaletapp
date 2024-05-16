@@ -12,7 +12,7 @@ export class UtilsService {
     private toastCtrl: ToastController,
     private router: Router,
     private alertController: AlertController,
-    private modalController: ModalController // Inyecta ModalController
+    private modalController: ModalController
   ) { }
 
   async presentLoading(options: { message?: string } = {}) {

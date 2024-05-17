@@ -1,0 +1,7 @@
+<ion-item class="custom-input" lines="none">
+  <ion-icon color="medium" *ngIf="icon" slot="start" [name]="icon"></ion-icon>
+  <ion-select [interfaceOptions]="customSelectOptions" [formControl]="control" [placeholder]="label">
+    <ion-select-option *ngFor="let option of selectOptions" [value]="option">{{ option }}</ion-select-option>
+  </ion-select>
+</ion-item>
+

@@ -16,6 +16,7 @@ export class SignUpPage implements OnInit {
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    roles: new FormControl(''),
   });
 
   constructor(
@@ -69,16 +70,19 @@ export class SignUpPage implements OnInit {
         translucent: true
       });
       await loading.present();
-
+  
       try {
         // Eliminar la contraseña del formulario antes de guardarlo en la base de datos
         const userInfo = { ...this.form.value };
         delete userInfo.password;
         delete userInfo.confirmPassword;
-
+  
+        // Incluir el campo 'roles' en los datos del usuario
+        userInfo.roles = this.form.value.roles;
+  
         // Guardar la información del usuario en la base de datos en la ruta correcta
         await this.firebaseSvc.setDocument(`users/${uid}`, userInfo);
-
+  
         // Redirigir al usuario a la página principal
         this.utilsSvc.routerLink('/home/listing');
       } catch (error) {
@@ -94,4 +98,4 @@ export class SignUpPage implements OnInit {
       }
     }
   }
-}
+}  

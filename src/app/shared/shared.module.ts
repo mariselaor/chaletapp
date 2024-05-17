@@ -13,6 +13,7 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { LogoComponent } from './components/logo/logo.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AddProductComponent } from './components/add-product/add-product.component';
+import { CustomSelectComponent } from './components/custom-select/custom-select.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AddProductComponent } from './components/add-product/add-product.compon
     SearchbarComponent,
     LogoComponent,
     HeaderComponent,
-    AddProductComponent
+    AddProductComponent,
+    CustomSelectComponent
   ],
   exports: [
     BadgeComponent,
@@ -38,6 +40,7 @@ import { AddProductComponent } from './components/add-product/add-product.compon
     LogoComponent,
     HeaderComponent,
     AddProductComponent,
+    CustomSelectComponent
   ],
   imports: [
     CommonModule,

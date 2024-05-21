@@ -1,45 +1,56 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router'; // Agregamos Router
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { CartItem } from 'src/app/models/cart-item.model';
 import { Food } from 'src/app/models/food.model';
 import { FoodService } from 'src/app/services/food.service';
 import { CartService } from 'src/app/services/cart.service';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
 })
-export class DetailPage {
+export class DetailPage implements OnInit {
   id: number | null = null;
   food: Food = {
     id: '',
-    categoryId: '', // Asegúrate de proporcionar un valor apropiado para categoryId
+    categoryId: '',
     title: '',
     price: null,
     image: '',
     description: ''
   };
+  user: User | null = null;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private foodService: FoodService,
     private cartService: CartService,
-    private router: Router, // Inyectamos Router
+    private firebaseService: FirebaseService,
+    private router: Router,
     private toastController: ToastController
   ) { }
 
   ngOnInit() {
+    this.getUser();
     const idParam = this.activatedRoute.snapshot.paramMap.get('id');
     if (idParam !== null) {
       this.id = +idParam;
       this.foodService.getFood(idParam).subscribe((food: Food) => {
         this.food = food;
       });
-    } else {
-      // Manejar el caso en que no se proporciona ningún ID en la URL
     }
+  }
+
+  getUser() {
+    this.firebaseService.getCurrentUser().subscribe(
+      (userData) => {
+        this.user = userData;
+      }
+    );
   }
 
   async addItemToCart() {
@@ -52,9 +63,7 @@ export class DetailPage {
         quantity: 1,
       };
 
-      //Aquí llamamos al método para agregar al carrito en el servicio adecuado.
       this.cartService.addToCart(cartItem);
-
       this.presentToast();
     }
   }
@@ -69,15 +78,12 @@ export class DetailPage {
     toast.present();
   }
 
-  // En DetailPage
   async deleteFood() {
     if (this.food && this.food.id !== null) {
-      // Convertir el ID de cadena a número antes de pasar al método deleteFood
-      const foodId = parseInt(this.food.id);
-      this.cartService.deleteFood(foodId);
-      console.log('Eliminar comida con ID:', foodId);
+      const foodId = this.food.id;
+      this.firebaseService.deleteFoodFromFirestore(foodId).then(() => {
+        this.router.navigate(['/listing']);
+      })
     }
   }
-  
-
 }

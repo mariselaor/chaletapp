@@ -36,8 +36,6 @@
           <div *ngIf="form.controls.confirmPassword.errors?.['required']">La contraseña es requerida</div>
           <div *ngIf="form.controls.confirmPassword.errors?.['noMatch']">Las contraseñas no coinciden</div>
         </div>
-        <app-custom-select [control]="form.controls.roles" label="Selecciona tipo de Usuario"
-          [selectOptions]="['Administrador', 'Usuario']"></app-custom-select>
 
         <ion-button mode="ios" class="ion-margin-vertical" type="submit" [disabled]="!form.valid" shape="round">
           Registrarme

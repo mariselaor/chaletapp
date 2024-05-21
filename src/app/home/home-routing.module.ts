@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePage } from './home.page';
+import { AuthGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -20,10 +21,10 @@ const routes: Routes = [
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
       },
       {
-        path: '', // Redirecciona al listado por defecto si no hay ninguna ruta especificada
-        redirectTo: 'listing',
-        pathMatch: 'full',
-      },
+        path: 'listing',
+        loadChildren: () => import('../screens/listing/listing.module').then(m => m.ListingPageModule),
+        canActivate: [AuthGuard] // Asegúrate de que la guardia esté configurada correctamente si es necesaria
+      },      
     ]
   }
 ];

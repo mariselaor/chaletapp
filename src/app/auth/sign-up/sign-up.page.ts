@@ -16,7 +16,7 @@ export class SignUpPage implements OnInit {
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    roles: new FormControl(''),
+    role: new FormControl('Usuario'),
   });
 
   constructor(
@@ -65,6 +65,8 @@ export class SignUpPage implements OnInit {
 
   async setUserInfo(uid: string) {
     if (this.form.valid) {
+      console.log('User Info:', this.form.value); // Verifica la información del usuario antes de guardarla
+  
       const loading = await this.loadingController.create({
         message: 'Registrando...',
         translucent: true
@@ -77,8 +79,8 @@ export class SignUpPage implements OnInit {
         delete userInfo.password;
         delete userInfo.confirmPassword;
   
-        // Incluir el campo 'roles' en los datos del usuario
-        userInfo.roles = this.form.value.roles;
+        // Incluir el campo 'role' en los datos del usuario
+        userInfo.role = this.form.value.role;
   
         // Guardar la información del usuario en la base de datos en la ruta correcta
         await this.firebaseSvc.setDocument(`users/${uid}`, userInfo);
@@ -98,4 +100,5 @@ export class SignUpPage implements OnInit {
       }
     }
   }
+  
 }  

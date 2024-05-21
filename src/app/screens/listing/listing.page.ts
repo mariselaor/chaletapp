@@ -6,6 +6,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service'; 
 import { AddProductComponent } from 'src/app/shared/components/add-product/add-product.component';
 import { ModalController } from '@ionic/angular';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-listing',
@@ -17,15 +18,19 @@ export class ListingPage implements OnInit {
   foods: Food[] = [];
   filteredFoods: Food[] = [];
   searchTerm: string = '';
+  user: User | null = null;  // Variable para almacenar la información del usuario
 
-  constructor(private firebaseService: FirebaseService, 
-              private router: Router,
-              private utilsSvc: UtilsService,
-              private modalController: ModalController) { } // Inyecta ModalController en el constructor
+  constructor(
+    private firebaseService: FirebaseService, 
+    private router: Router,
+    private utilsSvc: UtilsService,
+    private modalController: ModalController
+  ) { }
 
   ngOnInit() {
     this.getCategoriesFromFirebase();
     this.getFoodsFromFirebase();
+    this.getCurrentUser();  // Obtener la información del usuario actual
   }
 
   getCategoriesFromFirebase() {
@@ -66,28 +71,25 @@ export class ListingPage implements OnInit {
   }
 
   async openAddProductModal() {
-  const modal = await this.modalController.create({
-    component: AddProductComponent,
-    cssClass: 'add-product-modal'
-  });
-  modal.onDidDismiss().then((data) => {
-    if (data && data.data && data.data.newProduct) {
-      const newProduct = data.data.newProduct;
-      // Guardar el nuevo producto en Firebase y obtener el ID del documento
-      this.firebaseService.addFood(newProduct).then((docId) => {
-        // Asignar el ID del documento al nuevo producto localmente
-        newProduct.id = docId;
-        // Agregar el nuevo producto a la lista local de alimentos
-        this.foods.push(newProduct);
-        this.filteredFoods.push(newProduct); // Si es necesario
-      }).catch((error) => {
-        console.error('Error al agregar el producto:', error);
-      });
-    }
-  });
-  return await modal.present();
-}
-
+    const modal = await this.modalController.create({
+      component: AddProductComponent,
+      cssClass: 'add-product-modal'
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data && data.data && data.data.newProduct) {
+        const newProduct = data.data.newProduct;
+        // Guardar el nuevo producto en Firebase y obtener el ID del documento
+        this.firebaseService.addFood(newProduct).then((docId) => {
+          // Asignar el ID del documento al nuevo producto localmente
+          newProduct.id = docId;
+          // Agregar el nuevo producto a la lista local de alimentos
+          this.foods.push(newProduct);
+          this.filteredFoods.push(newProduct); // Si es necesario
+        })
+      }
+    });
+    return await modal.present();
+  }
 
   filterByCategory(category: Category | null) {
     if (!category) {
@@ -95,11 +97,15 @@ export class ListingPage implements OnInit {
       return;
     }
     
-    console.log('Categoria seleccionada:', category);
     
     this.filteredFoods = this.foods.filter(food => food.categoryId === category.id);
-    console.log('Alimentos filtrados:', this.filteredFoods);
   }
-  
-  
-}
+
+  getCurrentUser() {
+    this.firebaseService.getCurrentUser().subscribe(
+      (user: User | null) => {
+        this.user = user;
+      }
+    );
+  }
+}  

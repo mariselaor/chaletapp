@@ -29,6 +29,10 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthPageModule),
     canActivate: [NoAuthGuard]
   },
+  {
+    path: 'listing',
+    loadChildren: () => import('./screens/listing/listing.module').then(m => m.ListingPageModule)
+  },  
 
 ];
 

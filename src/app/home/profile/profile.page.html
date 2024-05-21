@@ -4,8 +4,15 @@
   <div class="content ion-text-center">
 
     <ion-icon class="avatar" name="person-circle-outline"></ion-icon>
-    <h2>{{user.name}}</h2>
-    <div>{{user.email}}</div>
+    <div *ngIf="user">
+      <h2>{{ user.name }}</h2>
+      <p>{{ user.email }}</p>
+      <!-- Otros detalles del perfil -->
+    </div>
+    <div *ngIf="!user">
+      <p>Usuario no encontrado.</p>
+    </div>
+    
 
     <ion-button (click)="signOut()" shape="round">
       Cerrar Sesión

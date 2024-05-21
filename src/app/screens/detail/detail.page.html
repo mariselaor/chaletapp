@@ -6,16 +6,15 @@
       </ion-button>
     </ion-buttons>
     <ion-title>Food Detail</ion-title>
-    <ion-buttons slot="end"> <!-- Mover el botón Eliminar Producto aquí -->
-      <ion-button (click)="deleteFood()">Eliminar Producto</ion-button>
+    <ion-buttons slot="end">
+      <ion-button (click)="deleteFood()" *ngIf="user?.role === 'Administrador'">Eliminar Producto</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="header"></div> <!-- Header section moved to ion-header -->
+  <div class="header"></div>
 
-  <!-- DETALLES DE COMIDA-->
   <ion-card>
     <ion-card-content>
       <ion-card-title>
@@ -27,7 +26,6 @@
     <ion-img [src]="food?.image"></ion-img>
 
     <ion-card-content>
-
       <div class="about">
         <h2>About</h2>
         <p>{{food?.description}}</p>
@@ -42,6 +40,4 @@
       </ion-col>
     </ion-row>
   </ion-card>
- 
-
 </ion-content>

@@ -23,15 +23,20 @@ export class ProfilePage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getCurrentUser();
   }
 
-  ionViewWillEnter() {
-    this.getUser()
+  getCurrentUser() {
+    this.firebasSvc.getCurrentUser().subscribe(user => {
+      if (user) {
+        this.user = user;
+      } else {
+        // El usuario no está autenticado, redirige a la página de inicio de sesión
+        this.router.navigateByUrl('/auth');
+      }
+    });
   }
 
-  getUser() {
-    return this.user = this.utilSvc.getElementFromLocalStorage('user')
-  }
 
   signOut() {
     this.utilSvc.presentAlert({
@@ -46,7 +51,6 @@ export class ProfilePage implements OnInit {
           text: 'Si, cerrar',
           handler: () => {
             this.firebasSvc.signOut();
-            this.router.navigateByUrl('/auth'); 
           }
         }
       ]

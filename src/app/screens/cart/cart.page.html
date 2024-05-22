@@ -1,0 +1,42 @@
+<ion-header>
+  <app-header></app-header>
+  <ion-toolbar>
+    <ion-title>Carrito de Compras</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+  <ion-list>
+    <ion-item *ngFor="let item of (cartItems$ | async)">
+      <ion-thumbnail slot="start">
+        <img [src]="item.image" alt="{{ item.name }}">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ item.name }}</h2>
+        <p>{{ item.price | currency }}</p>
+      </ion-label>
+      <!-- Botón de Disminuir Cantidad -->
+      <ion-button (click)="onDecrease(item)" fill="clear" color="danger">
+        <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+      </ion-button>
+      <!-- Etiqueta de Cantidad -->
+      <ion-label class="quantity-label">{{ item.quantity }}</ion-label>
+      <!-- Botón de Aumentar Cantidad -->
+      <ion-button (click)="onIncrease(item)" fill="clear" color="success">
+        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+      </ion-button>
+      <!-- Botón de Eliminar del Carrito -->
+      <ion-button (click)="removeFromCart(item)" fill="clear" color="medium">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Total del Carrito -->
+  <ion-item lines="full" class="total-item">
+    <ion-label>Total:</ion-label>
+    <ion-note>{{ totalAmount$ | async | currency }}</ion-note>
+  </ion-item>
+  <ion-button (click)="generatePdf()">Generar PDF de Compra</ion-button>
+
+</ion-content>

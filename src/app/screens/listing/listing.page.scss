@@ -1,0 +1,38 @@
+h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    color: #000000;
+    margin: 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Fuente serif elegante */
+    text-align: center; /* Centrar horizontalmente */
+    padding: 10px; /* Espaciado alrededor del texto */
+}
+
+
+.categories{
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
+}
+
+.list-header {
+    border: 2px solid #000;
+  padding: 10px;
+  margin: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.food-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+}

@@ -1,0 +1,19 @@
+<div class="card">
+  <ion-img [src]="item.image"></ion-img>
+  <div class="card-content">
+    <h3 class="title">{{item.title}}</h3>
+    <h2 class="subtitle"><sup>$</sup>{{item.price | number: '1.2'}}</h2>
+    <ion-buttons>
+      <ion-button (click)="onClick()">
+        <ion-icon name="cart-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </div>
+  
+  
+   
+  
+  
+</div>
+
+

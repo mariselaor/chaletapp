@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Agregar Producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-content-white-background">
+
+  <ion-item *ngIf="imageSelected" class="image-preview">
+    <img [src]="image.webviewPath" />
+  </ion-item>
+  
+  <!-- Mostrar el ícono solo si no se ha seleccionado una imagen -->
+  <ion-icon class="image-icon" *ngIf="!imageSelected" name="image-outline"></ion-icon>
+
+  <br>
+
+  <ion-item class="input-item">
+    <ion-label position="stacked"></ion-label>
+    <ion-button expand="full" (click)="selectImage()" class="image-button">Seleccionar Imagen</ion-button>
+  </ion-item>
+
+  <form (ngSubmit)="addFood()">
+    <ion-item class="input-item">
+      <ion-label position="floating">Nombre del producto</ion-label>
+      <ion-input [(ngModel)]="newFood.title" name="title" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item class="input-item">
+      <ion-label position="floating">Precio</ion-label>
+      <ion-input [(ngModel)]="newFood.price" name="price" type="number" required></ion-input>
+    </ion-item>
+
+    <ion-item class="input-item">
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea [(ngModel)]="newFood.description" name="description" rows="6" required></ion-textarea>
+    </ion-item>
+
+    <ion-item class="input-item">
+      <ion-label position="stacked">Categoría</ion-label>
+      <ion-select [(ngModel)]="newFood.categoryId" name="categoryId" required>
+        <ion-select-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+
+    <ion-button expand="block" type="submit" class="submit-button">Agregar Producto</ion-button>
+  </form>
+</ion-content>

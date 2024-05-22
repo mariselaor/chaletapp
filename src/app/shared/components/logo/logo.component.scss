@@ -1,0 +1,24 @@
+.icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem;
+  }
+  
+  .icon-container ion-icon {
+    font-size: 6rem; /* Tamaño más grande del icono */
+    color: white; /* Color marrón oscuro */
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .icon-container ion-icon:hover {
+    transform: scale(1.1); /* Efecto de escala al pasar el cursor */
+  }
+  
+  .icon-container span {
+    font-size: 2rem; /* Tamaño del texto */
+    font-weight: bold; /* Texto en negrita */
+    color: white; /* Color del texto */
+    margin-top: 1rem; /* Espacio entre el icono y el texto */
+  }

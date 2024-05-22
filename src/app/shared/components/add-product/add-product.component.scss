@@ -1,0 +1,35 @@
+/* Estilo del contenido del modal */
+.ion-content-white-background {
+  --ion-background-color: white;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+/* Estilo del ícono de la imagen */
+.image-icon {
+  font-size: 100px;
+  opacity: 0.3; /* Opacidad reducida para un aspecto sutil */
+  display: block; /* Asegura que el icono esté centrado */
+  margin: 0 auto; /* Centra horizontalmente */
+}
+
+/* Estilo del botón de selección de imagen */
+.image-button {
+  display: block; /* Asegura que el botón esté centrado */
+  margin: 0 auto; /* Centra horizontalmente */
+}
+
+/* Estilo de la vista previa de la imagen */
+.image-preview {
+  width: 200px;
+    height: 200px;
+    --border-radius: 15px;
+    margin: 0 auto;
+}
+
+ion-content {
+  --background: var(--ion-color-light);
+  --color: var(--ion-color-light-contrast);
+}

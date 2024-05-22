@@ -1,0 +1,53 @@
+ion-content {
+    --background: #f9f9f9;
+    padding: 16px;
+  }
+  
+  .food-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .food-image {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .food-title {
+    margin: 0;
+    text-align: center;
+  }
+  
+  .food-price {
+    font-size: 1.5rem;
+    color: #888;
+    text-align: center;
+  }
+  
+  .about {
+    padding: 16px 0;
+  }
+  
+  .about h2 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .about p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  ion-button {
+    margin-top: 0px;
+    
+    --color: #0c0c0c; /* White text color for the button */
+    
+
+  }
+  

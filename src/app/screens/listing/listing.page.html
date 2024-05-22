@@ -14,23 +14,22 @@
       <ion-button (click)="filterByCategory(null)">Mostrar todos</ion-button>
     </div>
 
-
-
-
     <!-- PRODUCTS -->
     <h1 class="list-header">Popular</h1>
     <div class="food-list">
       <app-food-card *ngFor="let food of filteredFoods" [item]="food" (click)="goToDetailPage(food.id)"></app-food-card>
-
     </div>
 
   </div>
 </ion-content>
 
 
-  <!-- Agregar nuevo producto -->
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="user?.role === 'Administrador'">
-    <ion-fab-button (click)="openAddProductModal()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+<!-- Agregar nuevo producto -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="user?.role === 'Administrador'">
+  <ion-fab-button (click)="openAddProductModal()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<!-- Botón para ocultar productos -->
+<ion-button *ngIf="user?.role === 'Administrador'" expand="block" (click)="openHideProductsModal()">Ocultar productos</ion-button>

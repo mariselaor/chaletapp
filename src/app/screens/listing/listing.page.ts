@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { Category } from 'src/app/models/category.model';
 import { FoodItem } from 'src/app/models/food.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { UtilsService } from 'src/app/services/utils.service'; 
+import { UtilsService } from 'src/app/services/utils.service';
 import { AddProductComponent } from 'src/app/shared/components/add-product/add-product.component';
 import { ModalController } from '@ionic/angular';
 import { User } from 'src/app/models/user.model';
+import { HideProductsModalComponent } from 'src/app/shared/components/hide-products-modal/hide-products-modal.component';
 
 @Component({
   selector: 'app-listing',
@@ -21,7 +22,7 @@ export class ListingPage implements OnInit {
   user: User | null = null;  // Variable para almacenar la información del usuario
 
   constructor(
-    private firebaseService: FirebaseService, 
+    private firebaseService: FirebaseService,
     private router: Router,
     private utilsSvc: UtilsService,
     private modalController: ModalController
@@ -47,18 +48,18 @@ export class ListingPage implements OnInit {
   getFoodsFromFirebase() {
     this.firebaseService.getFoodsFromService().subscribe((foods: FoodItem[]) => {
       this.foods = foods;
-      this.filteredFoods = foods; // Mostrar todos los alimentos al inicio
+      this.filteredFoods = foods.filter(food => !food.hidden); // Mostrar solo alimentos no ocultos al inicio
     });
   }
 
   filterFoods() {
     if (!this.searchTerm.trim()) {
-      this.filteredFoods = this.foods; // Si no hay término de búsqueda, mostrar todos los productos
+      this.filteredFoods = this.foods.filter(food => !food.hidden); // Si no hay término de búsqueda, mostrar todos los productos no ocultos
       return;
     }
 
     this.filteredFoods = this.foods.filter(food =>
-      food.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+      food.title.toLowerCase().includes(this.searchTerm.toLowerCase()) && !food.hidden
     );
   }
 
@@ -84,7 +85,9 @@ export class ListingPage implements OnInit {
           newProduct.id = docId;
           // Agregar el nuevo producto a la lista local de alimentos
           this.foods.push(newProduct);
-          this.filteredFoods.push(newProduct); // Si es necesario
+          if (!newProduct.hidden) {
+            this.filteredFoods.push(newProduct); // Si es necesario
+          }
         })
       }
     });
@@ -93,12 +96,11 @@ export class ListingPage implements OnInit {
 
   filterByCategory(category: Category | null) {
     if (!category) {
-      this.filteredFoods = this.foods; // Mostrar todos los alimentos si no se selecciona una categoría
+      this.filteredFoods = this.foods.filter(food => !food.hidden); // Mostrar todos los alimentos no ocultos si no se selecciona una categoría
       return;
     }
-    
-    
-    this.filteredFoods = this.foods.filter(food => food.categoryId === category.id);
+
+    this.filteredFoods = this.foods.filter(food => food.categoryId === category.id && !food.hidden);
   }
 
   getCurrentUser() {
@@ -108,4 +110,54 @@ export class ListingPage implements OnInit {
       }
     );
   }
-}  
+
+  hideProduct(productId: string) {
+    if (this.user && this.user.role === 'Administrador') {
+      const product = this.foods.find(food => food.id === productId);
+      if (product) {
+        product.hidden = true; // Marcar el producto como oculto
+        this.firebaseService.updateFood(product.id, { hidden: true }).then(() => {
+          this.filteredFoods = this.foods.filter(food => !food.hidden);
+        });
+      }
+    } else {
+      console.error('Usuario no autorizado para ocultar productos.');
+    }
+  }
+
+  restoreProduct(productId: string) {
+    if (this.user && this.user.role === 'Administrador') {
+      const product = this.foods.find(food => food.id === productId);
+      if (product) {
+        product.hidden = false; // Marcar el producto como no oculto
+        this.firebaseService.updateFood(product.id, { hidden: false }).then(() => {
+          this.filteredFoods = this.foods.filter(food => !food.hidden);
+        });
+      }
+    } else {
+      console.error('Usuario no autorizado para mostrar productos.');
+    }
+  }
+
+  async openHideProductsModal() {
+    const modal = await this.modalController.create({
+      component: HideProductsModalComponent,
+      componentProps: {
+        foods: this.foods
+      }
+    });
+
+    modal.onDidDismiss().then((detail) => {
+      if (detail.data) {
+        if (detail.data.hideProductId) {
+          this.hideProduct(detail.data.hideProductId);
+        }
+        if (detail.data.restoreProductId) {
+          this.restoreProduct(detail.data.restoreProductId);
+        }
+      }
+    });
+
+    await modal.present();
+  }
+}

@@ -22,7 +22,8 @@ export class DetailPage {
     title: '',
     price: null,
     image: '',
-    description: ''
+    description: '',
+    selected: false
   };
   user: User | null = null;
 

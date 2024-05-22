@@ -7,7 +7,6 @@
     </ion-buttons>
     <ion-title> Detalles </ion-title>
     <ion-buttons slot="end">
-      <ion-icon name="trash-outline"></ion-icon>
       <ion-button (click)="deleteFood()" *ngIf="user?.role === 'Administrador'">Eliminar Producto</ion-button>
     </ion-buttons>
   </ion-toolbar>

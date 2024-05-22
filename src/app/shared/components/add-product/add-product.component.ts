@@ -19,7 +19,8 @@ export class AddProductComponent implements OnInit, OnDestroy {
     price: null,
     description: '',
     categoryId: '',
-    image: ''
+    image: '',
+    selected: false
   };
 
   categories: Category[] = [];

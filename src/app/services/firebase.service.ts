@@ -135,6 +135,11 @@ uploadImageAndGetURL(file: File, filePath: string): Observable<string> {
   );
 } 
 
+updateFood(id: string, data: Partial<FoodItem>): Promise<void> {
+  return this.firestore.collection('foods').doc(id).update(data);
+}
+
+
   //PDF TICKET
   generatePdf(cartItems: CartItem[], total: number) {
     const doc = new jsPDF({

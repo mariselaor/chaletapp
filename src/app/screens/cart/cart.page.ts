@@ -27,48 +27,56 @@ export class CartPage implements OnInit {
     private firestore: FirebaseService,
   ) {}
 
-  ngOnInit() {
-    this.cartItems$ = this.cartService.getCart();
-    this.totalAmount$ = this.cartService.getTotalAmount();
+ // Método ngOnInit que se ejecuta al inicializar el componente
+ ngOnInit() {
+  this.cartItems$ = this.cartService.getCart(); // Obtiene los items del carrito
+  this.totalAmount$ = this.cartService.getTotalAmount(); // Obtiene el monto total
 
-    this.cartItems$.subscribe(items => this.cartItems = items);
-    this.totalAmount$.subscribe(amount => this.totalAmount = amount);
+  // Suscribe a los observables para actualizar los items del carrito y el monto total
+  this.cartItems$.subscribe(items => this.cartItems = items);
+  this.totalAmount$.subscribe(amount => this.totalAmount = amount);
 
-    this.foods$ = this.foodService.getFoodsItems();
-  }
+  // Obtiene los alimentos desde el servicio de alimentos
+  this.foods$ = this.foodService.getFoodsItems();
+}
 
-  onIncrease(item: CartItem) {
-    this.cartService.changeQty(1, item.id); // Eliminamos parseInt
-  }
+// Método para aumentar la cantidad de un item en el carrito
+onIncrease(item: CartItem) {
+  this.cartService.changeQty(1, item.id);
+}
 
-  onDecrease(item: CartItem) {
-    if (item.quantity == 1) this.removeFromCart(item);
-    else this.cartService.changeQty(-1, item.id); // Eliminamos parseInt
-  }
+// Método para disminuir la cantidad de un item en el carrito
+onDecrease(item: CartItem) {
+  if (item.quantity == 1) this.removeFromCart(item);
+  else this.cartService.changeQty(-1, item.id); 
+}
 
-  async removeFromCart(item: CartItem) {
-    const alert = await this.alertCtrl.create({
-      header: 'Eliminar del carrito',
-      message: '¿Está seguro de que desea eliminar?',
-      buttons: [
-        {
-          text: 'Si',
-          handler: () => this.cartService.deleteFood(item.id), // Eliminamos parseInt
-        },
-        {
-          text: 'No',
-        },
-      ],
-    });
+// Método para eliminar un item del carrito con confirmación de alerta
+async removeFromCart(item: CartItem) {
+  const alert = await this.alertCtrl.create({
+    header: 'Eliminar del carrito',
+    message: '¿Está seguro de que desea eliminar?',
+    buttons: [
+      {
+        text: 'Si',
+        handler: () => this.cartService.deleteFood(item.id), 
+      },
+      {
+        text: 'No',
+      },
+    ],
+  });
 
-    alert.present();
-  }
+  alert.present();
+}
 
-  generatePdf() {
-    this.firestore.generatePdf(this.cartItems, this.totalAmount);
-  }
+// Método para generar un PDF del carrito de compras
+generatePdf() {
+  this.firestore.generatePdf(this.cartItems, this.totalAmount);
+}
 
-  addToCart(foodItem: FoodItem) {
-    this.cartService.addFoodToCart(foodItem);
-  }
+// Método para agregar un alimento al carrito
+addToCart(foodItem: FoodItem) {
+  this.cartService.addFoodToCart(foodItem);
+}
 }

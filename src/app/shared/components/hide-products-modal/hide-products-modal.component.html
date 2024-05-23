@@ -8,12 +8,18 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let food of foods">
-      <ion-img [src]="food?.image" class="circular-image"></ion-img>
-      <ion-label>{{ food.title }}</ion-label>
-      <ion-button slot="end" *ngIf="!food.hidden" (click)="hideProduct(food.id)">Ocultar</ion-button>
-      <ion-button slot="end" *ngIf="food.hidden" (click)="restoreProduct(food.id)">Mostrar</ion-button>
-    </ion-item>
-  </ion-list>
+ <!-- Lista de productos -->
+ <ion-list>
+  <!-- Iteración sobre cada alimento en la lista -->
+  <ion-item *ngFor="let food of foods">
+    <!-- Imagen del alimento -->
+    <ion-img [src]="food?.image" class="circular-image"></ion-img>
+    <!-- Nombre del alimento -->
+    <ion-label>{{ food.title }}</ion-label>
+    <!-- Botón para ocultar el alimento si no está oculto -->
+    <ion-button slot="end" *ngIf="!food.hidden" (click)="hideProduct(food.id)">Ocultar</ion-button>
+    <!-- Botón para mostrar el alimento si está oculto -->
+    <ion-button slot="end" *ngIf="food.hidden" (click)="restoreProduct(food.id)">Mostrar</ion-button>
+  </ion-item>
+</ion-list>
 </ion-content>

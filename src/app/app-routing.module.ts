@@ -3,7 +3,6 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { NoAuthGuard } from './guards/no-auth.guard';
 import { AuthGuard } from './guards/auth.guard';
 
-
 const routes: Routes = [
   {
     path: 'home',
@@ -22,14 +21,21 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: () => import('./home/profile/profile.module').then(m => m.ProfilePageModule),
-    canActivate: [AuthGuard] 
+    canActivate: [AuthGuard]
   },
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthPageModule),
     canActivate: [NoAuthGuard]
   },
-
+  {
+    path: 'edit/:id', 
+    loadChildren: () => import('./screens/edit/edit.module').then(m => m.EditPageModule)
+  },
+  {
+    path: 'edit',
+    loadChildren: () => import('./screens/edit/edit.module').then( m => m.EditPageModule)
+  }
 ];
 
 @NgModule({

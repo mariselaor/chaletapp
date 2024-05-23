@@ -28,12 +28,14 @@ export class ListingPage implements OnInit {
     private modalController: ModalController
   ) { }
 
+  // Método ngOnInit que se ejecuta al inicializar el componente
   ngOnInit() {
     this.getCategoriesFromFirebase();
     this.getFoodsFromFirebase();
     this.getCurrentUser();  // Obtener la información del usuario actual
   }
 
+  // Método para obtener las categorías desde Firebase
   getCategoriesFromFirebase() {
     this.firebaseService.getCategories().subscribe(
       (categories: Category[]) => {
@@ -45,6 +47,7 @@ export class ListingPage implements OnInit {
     );
   }
 
+  // Método para obtener los alimentos desde Firebase
   getFoodsFromFirebase() {
     this.firebaseService.getFoodsFromService().subscribe((foods: FoodItem[]) => {
       this.foods = foods;
@@ -52,6 +55,7 @@ export class ListingPage implements OnInit {
     });
   }
 
+  // Método para filtrar los alimentos en función del término de búsqueda
   filterFoods() {
     if (!this.searchTerm.trim()) {
       this.filteredFoods = this.foods.filter(food => !food.hidden); // Si no hay término de búsqueda, mostrar todos los productos no ocultos
@@ -63,6 +67,7 @@ export class ListingPage implements OnInit {
     );
   }
 
+  // Método para navegar a la página de detalles del alimento
   goToDetailPage(id: string) {
     if (id && typeof id === 'string' && id.trim()) {
       this.router.navigate(['detail', id]);
@@ -71,6 +76,7 @@ export class ListingPage implements OnInit {
     }
   }
 
+  // Método para abrir el modal de añadir producto
   async openAddProductModal() {
     const modal = await this.modalController.create({
       component: AddProductComponent,
@@ -80,20 +86,19 @@ export class ListingPage implements OnInit {
       if (data && data.data && data.data.newProduct) {
         const newProduct = data.data.newProduct;
         // Guardar el nuevo producto en Firebase y obtener el ID del documento
-        this.firebaseService.addFood(newProduct).then((docId) => {
-          // Asignar el ID del documento al nuevo producto localmente
-          newProduct.id = docId;
+        this.firebaseService.addFood(newProduct).then(() => {
           // Agregar el nuevo producto a la lista local de alimentos
           this.foods.push(newProduct);
           if (!newProduct.hidden) {
             this.filteredFoods.push(newProduct); // Si es necesario
           }
-        })
+        });
       }
     });
     return await modal.present();
   }
 
+  // Método para filtrar alimentos por categoría
   filterByCategory(category: Category | null) {
     if (!category) {
       this.filteredFoods = this.foods.filter(food => !food.hidden); // Mostrar todos los alimentos no ocultos si no se selecciona una categoría
@@ -103,6 +108,7 @@ export class ListingPage implements OnInit {
     this.filteredFoods = this.foods.filter(food => food.categoryId === category.id && !food.hidden);
   }
 
+  // Método para obtener la información del usuario actual
   getCurrentUser() {
     this.firebaseService.getCurrentUser().subscribe(
       (user: User | null) => {
@@ -111,6 +117,7 @@ export class ListingPage implements OnInit {
     );
   }
 
+  // Método para ocultar un producto (solo disponible para administradores)
   hideProduct(productId: string) {
     if (this.user && this.user.role === 'Administrador') {
       const product = this.foods.find(food => food.id === productId);
@@ -125,6 +132,7 @@ export class ListingPage implements OnInit {
     }
   }
 
+  // Método para restaurar un producto oculto (solo disponible para administradores)
   restoreProduct(productId: string) {
     if (this.user && this.user.role === 'Administrador') {
       const product = this.foods.find(food => food.id === productId);
@@ -139,6 +147,7 @@ export class ListingPage implements OnInit {
     }
   }
 
+  // Método para abrir el modal de ocultar productos
   async openHideProductsModal() {
     const modal = await this.modalController.create({
       component: HideProductsModalComponent,

@@ -35,6 +35,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
     this.loadCategories();
   }
 
+  // Método para cargar las categorías desde Firebase
   loadCategories() {
     this.categoriesSubscription = this.firebaseService.getCategories().subscribe(
       (categories: Category[]) => {
@@ -46,6 +47,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Método para seleccionar una imagen utilizando la cámara o la galería
   async selectImage() {
     try {
       const image = await Camera.getPhoto({
@@ -59,6 +61,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
         webviewPath: image.webPath
       };
 
+      // Convertir la imagen seleccionada en un File
       const response = await fetch(image.webPath!);
       const blob = await response.blob();
       this.imageFile = new File([blob], 'product-image', { type: blob.type });
@@ -70,21 +73,29 @@ export class AddProductComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Método para agregar un nuevo producto
   async addFood() {
     try {
+      // Generar un ID único para el nuevo producto
       const newProductId = uuidv4();
       this.newFood.id = newProductId;
   
+      // Si se ha seleccionado una imagen, subirla a Firebase Storage
       if (this.imageFile) {
         const filePath = `products/${newProductId}`;
   
+        // Subir la imagen y obtener su URL de descarga
         this.firebaseService.uploadImageAndGetURL(this.imageFile, filePath)
           .subscribe({
             next: (downloadURL) => {
+              // Asignar la URL de la imagen al nuevo producto
               this.newFood.image = downloadURL;
+              
+              // Agregar el nuevo producto a Firestore
               this.firebaseService.addFood(this.newFood)
                 .then(() => {
                   console.log('Producto agregado exitosamente');
+                  // Cerrar el modal una vez que se ha agregado el producto
                   this.modalController.dismiss();
                 })
                 .catch((error) => {
@@ -96,8 +107,10 @@ export class AddProductComponent implements OnInit, OnDestroy {
             }
           });
       } else {
+        // Si no se ha seleccionado una imagen, agregar el producto sin imagen
         await this.firebaseService.addFood(this.newFood);
         console.log('Producto agregado exitosamente');
+        // Cerrar el modal una vez que se ha agregado el producto
         this.modalController.dismiss();
       }
     } catch (error) {
@@ -105,11 +118,14 @@ export class AddProductComponent implements OnInit, OnDestroy {
     }
   }  
 
+  // Método para cerrar el modal
   closeModal() {
     this.modalController.dismiss();
   }
 
+  // Método ngOnDestroy para realizar limpieza cuando se destruye el componente
   ngOnDestroy() {
+    // Desuscribirse de las suscripciones para evitar memory leaks
     if (this.categoriesSubscription) {
       this.categoriesSubscription.unsubscribe();
     }

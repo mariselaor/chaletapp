@@ -5,9 +5,10 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> Detalles </ion-title>
+    <ion-title>Detalles</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="deleteFood()" *ngIf="user?.role === 'Administrador'">Eliminar Producto</ion-button>
+      <ion-button (click)="deleteFood()" name="trash-outline" *ngIf="user?.role === 'Administrador'">Eliminar</ion-button>
+      <ion-button name="create-outline" (click)="editFood()" *ngIf="user?.role === 'Administrador'">Editar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

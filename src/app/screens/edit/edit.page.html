@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/detail/{{id}}">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Edit Product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Title</ion-label>
+    <ion-input [(ngModel)]="food.title"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Description</ion-label>
+    <ion-textarea [(ngModel)]="food.description"></ion-textarea>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Price</ion-label>
+    <ion-input type="number" [(ngModel)]="food.price"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Image URL</ion-label>
+    <ion-input [(ngModel)]="food.image"></ion-input>
+  </ion-item>
+  <ion-button expand="full" (click)="saveChanges()">Save</ion-button>
+</ion-content>

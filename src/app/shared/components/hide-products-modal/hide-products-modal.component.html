@@ -17,9 +17,9 @@
     <!-- Nombre del alimento -->
     <ion-label>{{ food.title }}</ion-label>
     <!-- Botón para ocultar el alimento si no está oculto -->
-    <ion-button slot="end" *ngIf="!food.hidden" (click)="hideProduct(food.id)">Ocultar</ion-button>
+    <ion-button color="medium"  slot="end" *ngIf="!food.hidden" (click)="hideProduct(food.id)">Ocultar</ion-button>
     <!-- Botón para mostrar el alimento si está oculto -->
-    <ion-button slot="end" *ngIf="food.hidden" (click)="restoreProduct(food.id)">Mostrar</ion-button>
+    <ion-button color="dark" slot="end" *ngIf="food.hidden" (click)="restoreProduct(food.id)">Mostrar</ion-button>
   </ion-item>
 </ion-list>
 </ion-content>

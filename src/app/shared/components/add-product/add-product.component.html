@@ -18,39 +18,35 @@
   <!-- Mostrar el ícono solo si no se ha seleccionado una imagen -->
   <ion-icon class="image-icon" *ngIf="!imageSelected" name="image-outline"></ion-icon>
 
-  <br>
-
   <ion-item class="input-item">
     <ion-label position="stacked"></ion-label>
-    <ion-button expand="full" (click)="selectImage()" class="image-button">Seleccionar Imagen</ion-button>
+    <ion-button color="medium" expand="full" (click)="selectImage()" class="image-button">Seleccionar Imagen</ion-button>
   </ion-item>
 
   <form (ngSubmit)="addFood()">
     <!-- Campos para ingresar el nombre, precio, descripción y categoría del producto -->
     <ion-item class="input-item">
-      <ion-item class="input-item">
-        <ion-label position="floating">Nombre del producto</ion-label>
-        <ion-input [(ngModel)]="newFood.title" name="title" type="text" required></ion-input>
-      </ion-item>
-
-      <ion-item class="input-item">
-        <ion-label position="floating">Precio</ion-label>
-        <ion-input [(ngModel)]="newFood.price" name="price" type="number" required></ion-input>
-      </ion-item>
-
-      <ion-item class="input-item">
-        <ion-label position="floating">Descripción</ion-label>
-        <ion-textarea [(ngModel)]="newFood.description" name="description" rows="6" required></ion-textarea>
-      </ion-item>
-
-      <ion-item class="input-item">
-        <ion-label position="stacked">Categoría</ion-label>
-        <ion-select [(ngModel)]="newFood.categoryId" name="categoryId" required>
-          <ion-select-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</ion-select-option>
-        </ion-select>
-      </ion-item>
+      <ion-label position="floating">Nombre del producto</ion-label>
+      <ion-input [(ngModel)]="newFood.title" name="title" type="text" required></ion-input>
     </ion-item>
 
-    <ion-button expand="block" type="submit" class="submit-button">Agregar Producto</ion-button>
+    <ion-item class="input-item">
+      <ion-label position="floating">Precio</ion-label>
+      <ion-input [(ngModel)]="newFood.price" name="price" type="number" required></ion-input>
+    </ion-item>
+
+    <ion-item class="input-item">
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea [(ngModel)]="newFood.description" name="description" rows="6" required></ion-textarea>
+    </ion-item>
+
+    <ion-item class="input-item">
+      <ion-label position="stacked">Categoría</ion-label>
+      <ion-select [(ngModel)]="newFood.categoryId" name="categoryId" required>
+        <ion-select-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button color="medium" expand="block" type="submit" class="submit-button">Agregar Producto</ion-button>
   </form>
 </ion-content>

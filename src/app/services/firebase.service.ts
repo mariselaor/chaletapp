@@ -187,6 +187,7 @@ export class FirebaseService {
         cellPadding: 2,
       },
       columnStyles: tableColumnStyles,
+      tableWidth: 'auto', 
       didDrawPage: (data) => {
         doc.setFontSize(12);
         doc.text(`Total: $${total.toFixed(2)}`, 14, data.cursor.y + 10);

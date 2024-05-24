@@ -1,5 +1,5 @@
 <ion-header>
-  <app-header></app-header>
+  <app-header color="medium"></app-header>
   <ion-toolbar>
     <ion-title>Carrito de Compras</ion-title>
   </ion-toolbar>
@@ -35,8 +35,12 @@
   <!-- Total del Carrito -->
   <ion-item lines="full" class="total-item">
     <ion-label>Total:</ion-label>
-    <ion-note>{{ totalAmount$ | async | currency }}</ion-note>
+    <h3>
+      {{ totalAmount$ | async | currency }}
+    </h3>
   </ion-item>
-  <ion-button (click)="generatePdf()">Generar PDF de Compra</ion-button>
 
+  <div class="button-container">
+  <ion-button color="medium"  (click)="generatePdf()">Ticket De Compra</ion-button>
+</div>
 </ion-content>

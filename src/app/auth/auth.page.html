@@ -1,5 +1,5 @@
-<ion-content class="page-container">
-  <app-header></app-header>
+<ion-content class="page-container" color="medium">
+  <app-header color="medium"></app-header>
   <app-logo></app-logo>
 
   <h2 class="ion-text-center ion-no-margin">Login</h2>
@@ -22,14 +22,14 @@
           <div *ngIf="form.controls.password.errors?.['required']">La contraseña es requerida</div>
         </div>
 
-        <ion-button mode="ios" class="ion-margin-vertical" type="submit" [disabled]="!form.valid">
+        <ion-button color="dark" mode="ios" class="ion-margin-vertical" type="submit" [disabled]="!form.valid">
           Ingresar
           <ion-icon slot="end" name="log-in-outline"></ion-icon>
         </ion-button>
 
         <div class="sign-up">
           <div>No tienes cuenta?</div>
-          <ion-button class="ion-margin-vertical" routerLink="./sign-up" mode="ios">
+          <ion-button color="dark" class="ion-margin-vertical" routerLink="./sign-up" mode="ios">
             Regístrate
             <ion-icon slot="end" name="person-add-outline"></ion-icon>
           </ion-button>

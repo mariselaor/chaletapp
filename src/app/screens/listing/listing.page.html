@@ -1,6 +1,6 @@
-<ion-content>
-  <app-header></app-header>
-  <h1>Menu</h1>
+<ion-content color="light">
+  <app-header color="medium"></app-header>
+  <h1 class="welcome-container">BIENVENIDO A TU CAFETERIA</h1>
   <div class="content">
 
     <!-- SEARCHBAR -->
@@ -8,28 +8,32 @@
 
     <!-- Categorías -->
     <div class="categories">
-      <ion-button *ngFor="let category of categories" (click)="filterByCategory(category)">
+      <ion-button *ngFor="let category of categories" (click)="filterByCategory(category)" color="medium"
+        class="category-button">
         {{ category.name }}
       </ion-button>
-      <ion-button (click)="filterByCategory(null)">Mostrar todos</ion-button>
+      <ion-button (click)="filterByCategory(null)" color="medium" class="category-button">Mostrar todos</ion-button>
     </div>
+
 
     <!-- PRODUCTS -->
-    <h1 class="list-header">Popular</h1>
+    <h1 class="list-header">Variedad De Comida</h1>
     <div class="food-list">
       <app-food-card *ngFor="let food of filteredFoods" [item]="food" (click)="goToDetailPage(food.id)"></app-food-card>
-    </div>
 
+    </div>
   </div>
+
 </ion-content>
 
-
 <!-- Agregar nuevo producto -->
-<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="user?.role === 'Administrador'">
-  <ion-fab-button (click)="openAddProductModal()">
-    <ion-icon name="add"></ion-icon>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" style="bottom: 80px;" *ngIf="user?.role === 'Administrador'">
+  <ion-fab-button color="medium" (click)="openAddProductModal()">
+    <ion-icon color="dark" name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>
-
-<!-- Botón para ocultar productos -->
-<ion-button *ngIf="user?.role === 'Administrador'" expand="block" (click)="openHideProductsModal()">Ocultar productos</ion-button>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="user?.role === 'Administrador'">
+  <ion-fab-button color="medium" (click)="openHideProductsModal()">
+    <ion-icon color="dark" name="eye"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

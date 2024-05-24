@@ -11,7 +11,7 @@ ion-toolbar {
 }
 
 ion-title {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
@@ -66,3 +66,9 @@ ion-button[color="medium"] {
     margin: 20px 10px;
   }
   
+  /* CSS para centrar el botón */
+.button-container {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  margin-top: 1rem; /* Margen superior opcional para espaciado */
+}

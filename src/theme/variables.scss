@@ -75,6 +75,10 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
+:root {
+  --toolbar-background: #0F1640;
+  --toolbar-color: #ffffff; /* Color del texto */
+}
 
 
   /*
@@ -240,4 +244,8 @@ html {
    * https://ionicframework.com/docs/layout/dynamic-font-scaling
    */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
+}
+:root {
+  --ion-color-custom-button: #F28705;
+  --ion-color-custom-button-contrast: #ffffff; /* Color del texto para contraste */
 }

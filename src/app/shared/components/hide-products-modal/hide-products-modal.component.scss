@@ -5,4 +5,8 @@
     object-fit: cover;
     margin-right: 10px; // Opcional, para dar algo de espacio entre la imagen y el texto
   }
-  
+ 
+  ion-toolbar.custom-toolbar {
+    --background: var(--toolbar-background);
+    --color: var(--toolbar-color);
+  }

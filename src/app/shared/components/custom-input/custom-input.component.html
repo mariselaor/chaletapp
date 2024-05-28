@@ -3,8 +3,4 @@
   <ion-icon *ngIf="icon" slot="start" [name]="icon"></ion-icon>
     <ion-label position="floating">{{label}}</ion-label>
   <ion-input [type]="type" debounce="500" [autocomplete]="autocomplete" [formControl]="control"></ion-input>
-
-  <ion-button  color="dark" *ngIf="isPassword" (click)="showOrHidePassword()" slot="end" fill="clear" shape="round">
-    <ion-icon slot="icon-only" [name]="hide ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
-  </ion-button>
 </ion-item>

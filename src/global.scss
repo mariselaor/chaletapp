@@ -86,8 +86,11 @@ ion-item {
 }
 
 ion-button {
+    --background: var(--ion-color-custom-button);
+    --color: var(--ion-color-custom-button-contrast);
     text-transform: capitalize;
-}
+  }
+    
 
 .d-flex-center {
     display: flex;

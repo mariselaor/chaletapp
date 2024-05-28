@@ -16,9 +16,12 @@ h1 {
     background-size: cover;
     background-position: center;
     text-align: center;
-    color: rgb(77, 101, 209);
-    font-family: 'Times New Roman', Times, serif;
+    color: rgb(12, 16, 34);
+    font-family: sans-serif;
+    text-shadow: 2px 2px 4px rgba(255, 128, 1, 0.884); /* Sombra */
+    -webkit-text-stroke: 1px rgb(248, 248, 248); /* Borde */
 }
+
   
 .categories {
 
@@ -49,3 +52,4 @@ h1 {
     
 }
 
+  

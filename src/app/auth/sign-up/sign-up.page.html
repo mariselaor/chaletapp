@@ -1,6 +1,6 @@
-<ion-content color="medium">
+<ion-content>
 
-  <app-header color="medium"   backButton="/auth"></app-header>
+  <app-header backButton="/auth"></app-header>
   <app-logo></app-logo>
 
   <h2 class="ion-text-center ion-no-margin">Nuevo Usuario</h2>
@@ -55,7 +55,7 @@
           <div *ngIf="form.controls.confirmPassword.errors?.['noMatch']">Las contraseñas no coinciden</div>
         </div>
 
-        <ion-button color="medium"   mode="ios" class="ion-margin-vertical" type="submit" [disabled]="!form.valid" shape="round">
+        <ion-button color="dark"  mode="ios" class="ion-margin-vertical" type="submit" [disabled]="!form.valid">
           Registrarme
           <ion-icon slot="end" name="person-add-outline"></ion-icon>
         </ion-button>

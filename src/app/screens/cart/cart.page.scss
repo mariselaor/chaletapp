@@ -13,6 +13,7 @@ ion-toolbar {
 ion-title {
   font-size: 1.2rem;
   font-weight: bold;
+  text-align: center;
 }
 
 ion-item {
@@ -58,7 +59,7 @@ ion-button[color="medium"] {
     align-items: center;
     font-size: 1.2rem;
     font-weight: bold;
-    --background: linear-gradient(45deg, #191a19, #f4f7f8);
+    --background: linear-gradient(45deg, #0F1640, #1D3273);
     --color: #ffffff;
     padding: 15px 20px;
     border-radius: 30px;

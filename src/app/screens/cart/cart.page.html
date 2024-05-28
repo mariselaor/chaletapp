@@ -1,5 +1,5 @@
 <ion-header>
-  <app-header color="medium"></app-header>
+  <app-header></app-header>
   <ion-toolbar>
     <ion-title>Carrito de Compras</ion-title>
   </ion-toolbar>
@@ -26,7 +26,7 @@
         <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
       </ion-button>
       <!-- Botón de Eliminar del Carrito -->
-      <ion-button (click)="removeFromCart(item)" fill="clear" color="medium">
+      <ion-button (click)="removeFromCart(item)" fill="clear">
         <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
       </ion-button>
     </ion-item>
@@ -41,7 +41,6 @@
   </ion-item>
 
   <div class="button-container">
-  <ion-button color="medium"  (click)="registerOrder()">Confirmar Pedido</ion-button>
-</div>
-
+    <ion-button (click)="confirmOrder()">Confirmar Pedido</ion-button>
+  </div>
 </ion-content>

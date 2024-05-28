@@ -1,5 +1,6 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <app-header></app-header>
+  <ion-toolbar>
     <ion-title>Pedidos</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -15,7 +16,7 @@
         <ion-list class="pedido-items">
           <ion-item *ngFor="let item of pedido.items" class="pedido-item-detail">
             <ion-thumbnail slot="start">
-              <img [src]="item.image" alt="{{ item.name }}" width="100" height="100">
+              <img [src]="item.image" alt="{{ item.name }}">
             </ion-thumbnail>
             <ion-label class="pedido-item-label">
               <h3 class="pedido-item-name">{{ item.name }}</h3>
@@ -29,7 +30,6 @@
         <ion-button (click)="deleteOrder(pedido)" color="danger" fill="clear">
           <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
         </ion-button>
-        <!-- Botones para cambiar el estado del pedido -->
         <ion-button (click)="updateOrderStatus(pedido, 'entregado')" fill="clear">
           <ion-icon slot="icon-only" name="checkmark-done-outline"></ion-icon>
         </ion-button>

@@ -56,7 +56,6 @@ export class CartPage implements OnInit {
   getUserData(uid: string) {
     this.firestore.doc<any>(`users/${uid}`).valueChanges().subscribe(userData => {
       this.user = userData; // Asignar los datos del usuario al objeto user
-      this.registerOrder(); // Llamar a registerOrder() después de obtener los datos del usuario
     });
   }
 
@@ -95,12 +94,45 @@ export class CartPage implements OnInit {
     this.cartService.addFoodToCart(foodItem);
   }
 
+  async confirmOrder() {
+    if (!this.user) {
+      console.error('Usuario no autenticado. No se puede registrar el pedido.');
+      return;
+    }
+
+    await this.presentConfirmOrderAlert();
+  }
+
+  async presentConfirmOrderAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar Pedido',
+      message: '¿Está seguro de que desea confirmar su pedido?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Confirmación de pedido cancelada.');
+          },
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.registerOrder();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
   registerOrder(): void {
     if (!this.user) {
       console.error('Usuario no autenticado. No se puede registrar el pedido.');
       return;
     }
-  
+
     const orderDetails: Pedido = {
       nombreCliente: this.user.name || 'Cliente Anónimo',
       fecha: firebase.firestore.Timestamp.now(),
@@ -109,16 +141,15 @@ export class CartPage implements OnInit {
       items: this.cartItems,
       id: '' // Agrega la propiedad id
     };
-  
+
     this.pedidoService.registerOrder(orderDetails)
       .then(() => {
         console.log('Pedido registrado exitosamente.');
         this.cartService.clearCart();
-        this.generatePdf(); // Llama al método para generar el PDF después de registrar el pedido
+        this.generatePdf(); 
       })
       .catch(error => {
         console.error('Error al registrar el pedido:', error);
       });
   }  
-  
-}  
+}

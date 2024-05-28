@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePage } from './home.page';
+import { AdminGuard } from '../guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
         path: 'profile',
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
       },
+      {
+        path: 'pedido',
+        loadChildren: () => import('../screens/pedido/pedido.module').then( m => m.PedidoPageModule),
+        canActivate: [AdminGuard] 
+      },       
       {
         path: '', // Redirecciona al listado por defecto si no hay ninguna ruta especificada
         redirectTo: 'listing',

@@ -5,7 +5,11 @@ import { CartItem } from 'src/app/models/cart-item.model';
 import { CartService } from 'src/app/services/cart.service';
 import { FoodService } from 'src/app/services/food.service';
 import { FoodItem } from 'src/app/models/food.model';
-import { FirebaseService } from 'src/app/services/firebase.service';
+import { PedidoService } from 'src/app/services/pedido.service';
+import { Pedido } from 'src/app/models/pedido.model';
+import firebase from 'firebase/compat/app';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-cart',
@@ -16,6 +20,7 @@ export class CartPage implements OnInit {
   cartItems$: Observable<CartItem[]> | null = null;
   totalAmount$: Observable<number> | null = null;
   foods$: Observable<FoodItem[]> | null = null;
+  user: any; // Almacenará la información del usuario autenticado
 
   cartItems: CartItem[] = [];
   totalAmount: number = 0;
@@ -24,59 +29,96 @@ export class CartPage implements OnInit {
     private cartService: CartService,
     private foodService: FoodService,
     private alertCtrl: AlertController,
-    private firestore: FirebaseService,
-  ) {}
+    private pedidoService: PedidoService,
+    private afAuth: AngularFireAuth,
+    private firestore: AngularFirestore // Inyectamos AngularFirestore aquí
+  ) { }
 
- // Método ngOnInit que se ejecuta al inicializar el componente
- ngOnInit() {
-  this.cartItems$ = this.cartService.getCart(); // Obtiene los items del carrito
-  this.totalAmount$ = this.cartService.getTotalAmount(); // Obtiene el monto total
+  ngOnInit() {
+    this.cartItems$ = this.cartService.getCart();
+    this.totalAmount$ = this.cartService.getTotalAmount();
 
-  // Suscribe a los observables para actualizar los items del carrito y el monto total
-  this.cartItems$.subscribe(items => this.cartItems = items);
-  this.totalAmount$.subscribe(amount => this.totalAmount = amount);
+    this.cartItems$.subscribe(items => this.cartItems = items);
+    this.totalAmount$.subscribe(amount => this.totalAmount = amount);
+    this.foods$ = this.foodService.getFoodsItems();
 
-  // Obtiene los alimentos desde el servicio de alimentos
-  this.foods$ = this.foodService.getFoodsItems();
-}
+    // Obtener el usuario autenticado al inicializar el componente
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.getUserData(user.uid); // Obtener datos del usuario si está autenticado
+      } else {
+        this.user = null; // Si no hay usuario autenticado, establecer como null
+      }
+    });
+  }
 
-// Método para aumentar la cantidad de un item en el carrito
-onIncrease(item: CartItem) {
-  this.cartService.changeQty(1, item.id);
-}
+  // Método para obtener los datos del usuario desde Firestore
+  getUserData(uid: string) {
+    this.firestore.doc<any>(`users/${uid}`).valueChanges().subscribe(userData => {
+      this.user = userData; // Asignar los datos del usuario al objeto user
+      this.registerOrder(); // Llamar a registerOrder() después de obtener los datos del usuario
+    });
+  }
 
-// Método para disminuir la cantidad de un item en el carrito
-onDecrease(item: CartItem) {
-  if (item.quantity == 1) this.removeFromCart(item);
-  else this.cartService.changeQty(-1, item.id); 
-}
+  async onIncrease(item: CartItem) {
+    this.cartService.changeQty(1, item.id);
+  }
 
-// Método para eliminar un item del carrito con confirmación de alerta
-async removeFromCart(item: CartItem) {
-  const alert = await this.alertCtrl.create({
-    header: 'Eliminar del carrito',
-    message: '¿Está seguro de que desea eliminar?',
-    buttons: [
-      {
-        text: 'Si',
-        handler: () => this.cartService.deleteFood(item.id), 
-      },
-      {
-        text: 'No',
-      },
-    ],
-  });
+  async onDecrease(item: CartItem) {
+    if (item.quantity == 1) this.removeFromCart(item);
+    else this.cartService.changeQty(-1, item.id);
+  }
 
-  alert.present();
-}
+  async removeFromCart(item: CartItem) {
+    const alert = await this.alertCtrl.create({
+      header: 'Eliminar del carrito',
+      message: '¿Está seguro de que desea eliminar?',
+      buttons: [
+        {
+          text: 'Si',
+          handler: () => this.cartService.deleteFood(item.id),
+        },
+        {
+          text: 'No',
+        },
+      ],
+    });
 
-// Método para generar un PDF del carrito de compras
-generatePdf() {
-  this.firestore.generatePdf(this.cartItems, this.totalAmount);
-}
+    alert.present();
+  }
 
-// Método para agregar un alimento al carrito
-addToCart(foodItem: FoodItem) {
-  this.cartService.addFoodToCart(foodItem);
-}
-}
+  generatePdf() {
+    this.pedidoService.generatePdf(this.cartItems, this.totalAmount);
+  }
+
+  addToCart(foodItem: FoodItem) {
+    this.cartService.addFoodToCart(foodItem);
+  }
+
+  registerOrder(): void {
+    if (!this.user) {
+      console.error('Usuario no autenticado. No se puede registrar el pedido.');
+      return;
+    }
+  
+    const orderDetails: Pedido = {
+      nombreCliente: this.user.name || 'Cliente Anónimo',
+      fecha: firebase.firestore.Timestamp.now(),
+      totalAmount: this.totalAmount,
+      estado: 'pendiente',
+      items: this.cartItems,
+      id: '' // Agrega la propiedad id
+    };
+  
+    this.pedidoService.registerOrder(orderDetails)
+      .then(() => {
+        console.log('Pedido registrado exitosamente.');
+        this.cartService.clearCart();
+        this.generatePdf(); // Llama al método para generar el PDF después de registrar el pedido
+      })
+      .catch(error => {
+        console.error('Error al registrar el pedido:', error);
+      });
+  }  
+  
+}  

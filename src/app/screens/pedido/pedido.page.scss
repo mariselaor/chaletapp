@@ -1,0 +1,67 @@
+.pedido-content {
+    --ion-safe-area-left: 20px;
+    --ion-safe-area-right: 20px;
+  }
+  
+  .pedido-list {
+    padding-top: 20px;
+  }
+  
+  .pedido-item {
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+  }
+  
+  .pedido-label {
+    display: block;
+  }
+  
+  .pedido-cliente {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .pedido-fecha, .pedido-total, .pedido-estado {
+    font-size: 14px;
+    margin: 0;
+    color: #666;
+  }
+  
+  .pedido-items {
+    margin-top: 10px;
+    padding-left: 10px;
+    border-left: 2px solid #007bff;
+  }
+  
+  .pedido-item-detail {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+  }
+  
+  .pedido-item-label {
+    margin-left: 10px;
+  }
+  
+  .pedido-item-name {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .pedido-item-quantity, .pedido-item-price {
+    font-size: 14px;
+    margin: 0;
+    color: #666;
+  }
+  
+  .no-pedidos {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #666;
+  }

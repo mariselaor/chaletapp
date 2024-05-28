@@ -64,6 +64,11 @@ export class CartService {
     }
   }
 
+  // Limpiar el carrito
+  clearCart(): void {
+    this.items$.next([]); // Establecer el carrito como vacío
+  }
+
   // Obtener el monto total del carrito como un observable
   getTotalAmount(): Observable<number> {
     return this.items$.pipe(

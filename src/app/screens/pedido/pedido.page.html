@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="pedido-content">
+  <ion-list *ngIf="pedidos.length > 0" class="pedido-list">
+    <ion-item *ngFor="let pedido of pedidos" class="pedido-item">
+      <ion-label class="pedido-label">
+        <h2 class="pedido-cliente">{{ pedido.nombreCliente }}</h2>
+        <p class="pedido-fecha">{{ pedido.fecha?.toDate() | date:'dd/MM/yyyy' }}</p>
+        <p class="pedido-total">Total: {{ pedido.totalAmount | currency }}</p>
+        <p class="pedido-estado">Estado: {{ pedido.estado }}</p>
+        <ion-list class="pedido-items">
+          <ion-item *ngFor="let item of pedido.items" class="pedido-item-detail">
+            <ion-thumbnail slot="start">
+              <img [src]="item.image" alt="{{ item.name }}" width="100" height="100">
+            </ion-thumbnail>
+            <ion-label class="pedido-item-label">
+              <h3 class="pedido-item-name">{{ item.name }}</h3>
+              <p class="pedido-item-quantity">Cantidad: {{ item.quantity }}</p>
+              <p class="pedido-item-price">Precio unitario: {{ item.price | currency }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="deleteOrder(pedido)" color="danger" fill="clear">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+        <!-- Botones para cambiar el estado del pedido -->
+        <ion-button (click)="updateOrderStatus(pedido, 'entregado')" fill="clear">
+          <ion-icon slot="icon-only" name="checkmark-done-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="pedidos.length === 0" color="white" class="no-pedidos">
+    <p>No hay pedidos disponibles.</p>
+  </ion-text>
+</ion-content>

@@ -35,6 +35,10 @@ const routes: Routes = [
   {
     path: 'edit',
     loadChildren: () => import('./screens/edit/edit.module').then( m => m.EditPageModule)
+  },
+  {
+    path: 'pedido',
+    loadChildren: () => import('./screens/pedido/pedido.module').then( m => m.PedidoPageModule)
   }
 ];
 

@@ -89,9 +89,10 @@ export class DetailPage {
   // Método para mostrar una notificación tipo toast
   async presentToast() {
     const toast = await this.toastController.create({
-      message: 'Food added to the cart',
+      message: 'Agregado al carrito',
       position: 'top',
       duration: 2000,
+      color: 'success'
     });
 
     toast.present();
